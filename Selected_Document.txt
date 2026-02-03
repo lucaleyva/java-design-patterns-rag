@@ -1,0 +1,1279 @@
+A Comprehensive Guide
+to Design Patterns in Java
+Unlock the Power of Reusable Code with Design Patterns
+PublishedApril 14, 2023•20 min read
+Amit kumar
+
+   ☀
+Contents2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 1/46
+
+Results-driven Software Engineer specializing in digital transformations, API development,
+and cloud-based solutions. Skilled in Java, microservices, and Agile methodologies. Adept at
+optimizing processes, enhancing security, and reducing deployment time. Passionate about
+collaborating with cross-functional teams to deliver innovative solutions that drive growth and
+create exceptional user experiences. Excited about the future of tech and actively pursuing
+knowledge in Artificial Intelligence (AI) and Machine Learning (ML) to stay at the forefront of
+industry innovation.
+SERIES
+Java Uncovered: Exploring the Infinite Possibilities
+TAGS
+#java #design-patterns #design-principles #design-and-architecture
+Introduction to Design Patterns
+Design patterns are reusable solutions to common problems that arise during
+software design. They provide a standardized way to approach these problems,
+making it easier for developers to create efficient and maintainable code. In this
+guide, we'll explore some of the most common design patterns in Java, complete
+with examples and code snippets.
+Benefits of Design Patterns and Real-World Use
+Cases
+Design patterns offer several advantages to software developers, including:
+Improved code readability and maintainability: Design patterns provide a
+standard way of solving common problems, making the code easier to
+understand and maintain.2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 2/46
+
+Enhanced modularity and reusability: Design patterns encourage modular
+and reusable code, allowing you to use the same solution in different parts of
+your application.
+Faster development: By applying design patterns, developers can save time
+and effort when developing new features or fixing issues since they can
+leverage proven solutions instead of reinventing the wheel.
+Easier communication among team members: Design patterns provide a
+common vocabulary for developers, making it easier to discuss and
+understand the structure and behavior of the code.
+Real-world use cases of design patterns:
+Singleton: Ensuring a single instance of a database connection or a logging
+class.
+Factory Method: Creating objects for different file formats like CSV, JSON, or
+XML parsers.
+Observer: Implementing a publish-subscribe model in a messaging system or
+updating multiple UI components when data changes.
+Strategy: Supporting different payment methods in an e-commerce
+application or providing different sorting algorithms in a text editor.
+Creational Patterns
+Creational design patterns deal with the process of object creation. They help to
+abstract the instantiation process and make the code more flexible, reusable, and
+maintainable.
+Singleton Pattern
+The Singleton pattern ensures that a class has only one instance and provides a
+global point of access to it. This is useful when you need a single object to
+coordinate actions across the system.
+Example: A Logger class that handles logging messages for an application.2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 3/46
+
+Usage:
+Factory Pattern
+The Factory pattern provides an interface for creating objects in a super class,
+allowing subclasses to decide which class to instantiate. It promotes loose
+coupling by eliminating the need for clients to know about the concrete classes.
+Example: A ShapeFactory class that creates different shapes based on the input.publicclassLogger {
+privatestatic Logger instance;
+privateLogger() {}
+publicstaticsynchronized Logger getInstance() {
+if (instance == null) {
+            instance = newLogger();
+        }
+return instance;
+    }
+publicvoidlog(String message) {
+        System.out.println("Log: " + message);
+    }
+}
+Loggerlogger= Logger.getInstance();
+logger.log("This is a log message.");
+publicinterfaceShape {
+voiddraw();
+}
+publicclassCircleimplementsShape {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 4/46
+
+Usage:
+Abstract Factory Pattern@Override
+publicvoiddraw() {
+        System.out.println("Drawing a circle.");
+    }
+}
+publicclassRectangleimplementsShape {
+@Override
+publicvoiddraw() {
+        System.out.println("Drawing a rectangle.");
+    }
+}
+publicclassShapeFactory {
+public Shape createShape(String shapeType) {
+if (shapeType == null) {
+returnnull;
+        }
+if (shapeType.equalsIgnoreCase("CIRCLE")) {
+returnnewCircle();
+        } elseif (shapeType.equalsIgnoreCase("RECTANGLE")) {
+returnnewRectangle();
+        }
+returnnull;
+    }
+}
+ShapeFactoryshapeFactory=newShapeFactory();
+Shapecircle= shapeFactory.createShape("CIRCLE");
+Shaperectangle= shapeFactory.createShape("RECTANGLE");
+circle.draw();
+rectangle.draw();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 5/46
+
+The Abstract Factory pattern provides an interface for creating families of related
+or dependent objects without specifying their concrete classes. It allows you to
+switch between different product families at runtime.
+Example: A GUI factory that creates different button and checkbox objects for
+different platforms.
+publicinterfaceButton {
+voidrender();
+}
+publicinterfaceCheckbox {
+voidcheck();
+}
+publicclassWindowsButtonimplementsButton {
+@Override
+publicvoidrender() {
+        System.out.println("Rendering a Windows button.");
+    }
+}
+publicclassMacOSButtonimplementsButton {
+@Override
+publicvoidrender() {
+        System.out.println("Rendering a macOS button.");
+    }
+}
+publicclassWindowsCheckboximplementsCheckbox {
+@Override
+publicvoidcheck() {
+        System.out.println("Checking a Windows checkbox.");
+    }
+}
+publicclassMacOSCheckboximplementsCheckbox {
+@Override
+publicvoidcheck() {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 6/46
+
+Usage:        System.out.println("Checking a macOS checkbox.");
+    }
+}
+publicinterfaceGUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+publicclassWindowsFactoryimplementsGUIFactory {
+@Override
+public Button createButton() {
+returnnewWindowsButton();
+    }
+@Override
+public Checkbox createCheckbox() {
+returnnewWindowsCheckbox();
+    }
+}
+publicclassMacOSFactoryimplementsGUIFactory {
+@Override
+public Button createButton() {
+returnnewMacOSButton();
+    }
+@Override
+public Checkbox createCheckbox() {
+returnnewMacOSCheckbox();
+    }
+}
+GUIFactory factory;
+Stringplatform="macos"; // Can be changed to "windows"2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 7/46
+
+Builder Pattern
+The Builder pattern separates the construction of a complex object from its
+representation, allowing the same construction process to create different
+representations. It is useful when dealing with objects that have many optional or
+required parameters.
+Example: A Computer class with a nested builder class to create a computer
+object.if (platform.equals("windows")) {
+    factory = newWindowsFactory();
+} else {
+    factory = newMacOSFactory();
+}
+Buttonbutton= factory.createButton();
+Checkboxcheckbox= factory.createCheckbox();
+button.render();
+checkbox.check();
+publicclassComputer {
+private String processor;
+privateint ram;
+privateint storage;
+privateComputer(Builder builder) {
+this.processor = builder.processor;
+this.ram = builder.ram;
+this.storage = builder.storage;
+    }
+publicstaticclassBuilder {
+private String processor;
+privateint ram;
+privateint storage;
+publicBuilder(String processor) {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 8/46
+
+Usage:
+Prototype Pattern
+The Prototype pattern involves creating new objects by cloning existing ones. It is
+useful when object creation is expensive or complex, and you want to avoid
+duplicating the effort.
+Example: A Shape class that can be cloned to create new shape objects.this.processor = processor;
+        }
+public Builder setRam(int ram) {
+this.ram = ram;
+returnthis;
+        }
+public Builder setStorage(int storage) {
+this.storage = storage;
+returnthis;
+        }
+public Computer build() {
+returnnewComputer(this);
+        }
+    }
+}
+Computercomputer=newComputer.Builder("Intel Core i9")
+        .setRam(32)
+        .setStorage(512)
+        .build();
+publicabstractclassShapeimplementsCloneable {
+private String id;2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 9/46
+
+public String getId() {
+return id;
+    }
+publicvoidsetId(String id) {
+this.id = id;
+    }
+publicabstractvoiddraw();
+@Override
+public Object clone() {
+Objectclone=null;
+try {
+            clone = super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+return clone;
+    }
+}
+publicclassCircleextendsShape {
+@Override
+publicvoiddraw() {
+        System.out.println("Drawing a circle.");
+    }
+}
+publicclassRectangleextendsShape {
+@Override
+publicvoiddraw() {
+        System.out.println("Drawing a rectangle.");
+    }
+}
+publicclassShapeCache {
+privatestatic Map<String, Shape> shapeMap = newHashMap=>();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 10/46
+
+Usage:
+Structural Patterns
+Structural patterns are concerned with the composition of classes and objects.
+They help you to create larger structures while maintaining the relationships
+between components.
+Adapter Patternpublicstatic Shape getShape(String id) {
+ShapecachedShape= shapeMap.get(id);
+return (Shape) cachedShape.clone();
+    }    
+publicstaticvoidloadCache() {
+Circlecircle=newCircle();
+        circle.setId("1");
+        shapeMap.put(circle.getId(), circle);
+Rectanglerectangle=newRectangle();
+        rectangle.setId("2");
+        shapeMap.put(rectangle.getId(), rectangle);
+    }
+}
+ShapeCache.loadCache();
+ShapeclonedCircle= ShapeCache.getShape("1");
+ShapeclonedRectangle= ShapeCache.getShape("2");
+clonedCircle.draw();
+clonedRectangle.draw();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 11/46
+
+The Adapter pattern allows you to convert the interface of a class into another
+interface that clients expect. It's useful when you want to use an existing class
+with an incompatible interface.
+Example: Adapting a LegacyRectangle class to the Shape interface.
+Usage: publicinterfaceShape {
+voiddraw(int x1, int y1, int x2, int y2);
+}
+publicclassLegacyRectangle {
+publicvoiddrawRectangle(int x1, int y1, int width, int heig
+        System.out.println("Drawing rectangle: (" + x1 + ", " + y
+    }
+}
+publicclassRectangleAdapterimplementsShape {
+private LegacyRectangle legacyRectangle;
+publicRectangleAdapter(LegacyRectangle legacyRectangle) {
+this.legacyRectangle = legacyRectangle;
+    }
+@Override
+publicvoiddraw(int x1, int y1, int x2, int y2) {
+intwidth= x2 - x1;
+intheight= y2 - y1;
+        legacyRectangle.drawRectangle(x1, y1, width, height);
+    }
+}
+LegacyRectanglelegacyRectangle=newLegacyRectangle();
+Shaperectangle=newRectangleAdapter(legacyRectangle);
+rectangle.draw(10, 20, 30, 40);2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 12/46
+
+Bridge Pattern
+The Bridge pattern decouples an abstraction from its implementation, allowing
+them to vary independently. It's useful when you want to separate the interface
+from its implementation and allow them to evolve independently.
+Example: A Shape class with different rendering methods.
+publicinterfaceRenderer {
+voidrenderShape(Shape shape);
+}
+publicclassVectorRendererimplementsRenderer {
+@Override
+publicvoidrenderShape(Shape shape) {
+        System.out.println("Rendering " + shape.getName() + " usi
+    }
+}
+publicclassRasterRendererimplementsRenderer {
+@Override
+publicvoidrenderShape(Shape shape) {
+        System.out.println("Rendering " + shape.getName() + " usi
+    }
+}
+publicabstractclassShape {
+private Renderer renderer;
+publicShape(Renderer renderer) {
+this.renderer = renderer;
+    }
+publicabstract String getName();
+publicvoiddraw() {
+        renderer.renderShape(this);
+    }
+}2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 13/46
+
+Usage :
+Composite Pattern
+The Composite pattern allows you to compose objects into tree structures to
+represent part-whole hierarchies. It enables clients to treat individual objects and
+compositions uniformly.
+Example: A graphic class with composite and leaf components.ypublicclassCircleextendsShape {
+publicCircle(Renderer renderer) {
+super(renderer);
+    }
+@Override
+public String getName() {
+return"circle";
+    }
+}
+publicclassRectangleextendsShape {
+publicRectangle(Renderer renderer) {
+super(renderer);
+    }
+}
+RenderervectorRenderer=newVectorRenderer();
+RendererrasterRenderer=newRasterRenderer();
+ShapevectorCircle=newCircle(vectorRenderer);
+ShaperasterRectangle=newRectangle(rasterRenderer);
+vectorCircle.draw();
+rasterRectangle.draw();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 14/46
+
+Usage :publicinterfaceGraphic {
+voiddraw();
+}
+publicclassCompositeGraphicimplementsGraphic {
+private List<Graphic> graphics = newArrayList=>();
+publicvoidadd(Graphic graphic) {
+        graphics.add(graphic);
+    }
+publicvoidremove(Graphic graphic) {
+        graphics.remove(graphic);
+    }
+@Override
+publicvoiddraw() {
+for (Graphic graphic : graphics) {
+            graphic.draw();
+        }
+    }
+}
+publicclassCircleimplementsGraphic {
+@Override
+publicvoiddraw() {
+        System.out.println("Drawing a circle.");
+    }
+}
+publicclassRectangleimplementsGraphic {
+@Override
+publicvoiddraw() {
+        System.out.println("Drawing a rectangle.");
+    }
+}2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 15/46
+
+Decorator Pattern
+The Decorator pattern allows you to attach additional responsibilities to an object
+dynamically. It provides a flexible alternative to subclassing for extending
+functionality.
+Example: Adding borders and colors to a basic rectangle.CompositeGraphiccompositeGraphic=newCompositeGraphic();
+Circlecircle=newCircle();
+Rectanglerectangle=newRectangle();
+compositeGraphic.add(circle);
+compositeGraphic.add(rectangle);
+compositeGraphic.draw();
+publicinterfaceShape {
+voiddraw();
+}
+publicclassRectangleimplementsShape {
+@Override
+publicvoiddraw() {
+        System.out.println("Drawing a rectangle.");
+    }
+}
+publicabstractclassShapeDecoratorimplementsShape {
+protected Shape decoratedShape;
+publicShapeDecorator(Shape decoratedShape) {
+this.decoratedShape = decoratedShape;
+    }
+@Override
+publicvoiddraw() {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 16/46
+
+Usage :        decoratedShape.draw();
+    }
+}
+publicclassBorderDecoratorextendsShapeDecorator {
+publicBorderDecorator(Shape decoratedShape) {
+super(decoratedShape);
+    }
+@Override
+publicvoiddraw() {
+super.draw();
+        addBorder();
+    }
+privatevoidaddBorder() {
+        System.out.println("Adding a border.");
+    }
+}
+publicclassColorDecoratorextendsShapeDecorator {
+publicColorDecorator(Shape decoratedShape) {
+super(decoratedShape);
+    }
+@Override
+publicvoiddraw() {
+super.draw();
+        fillColor();
+    }
+privatevoidfillColor() {
+        System.out.println("Filling with color.");
+    }
+}2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 17/46
+
+Facade Pattern
+The Facade pattern provides a unified interface to a set of interfaces in a
+subsystem. It defines a higher-level interface that makes the subsystem easier to
+use.
+Example: A computer class with a simplified interface for starting and
+shutting down. Shaperectangle=newRectangle();
+ShapeborderRectangle=newBorderDecorator(rectangle);
+ShapecoloredBorderRectangle=newColorDecorator(borderRectangle
+coloredBorderRectangle.draw();
+publicclassCPU {
+publicvoidstart() {
+        System.out.println("CPU started.");
+    }
+publicvoidshutDown() {
+        System.out.println("CPU shut down.");
+    }
+}
+publicclassMemory {
+publicvoidload() {
+        System.out.println("Memory loaded.");
+    }
+publicvoidclear() {
+        System.out.println("Memory cleared.");
+    }
+}
+publicclassHardDrive {
+publicvoidread() {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 18/46
+
+Usage :        System.out.println("Hard drive reading.");
+    }
+publicvoidstop() {
+        System.out.println("Hard drive stopped.");
+    }
+}
+publicclassComputerFacade {
+private CPU cpu;    
+private Memory memory;
+private HardDrive hardDrive;
+publicComputerFacade() {
+this.cpu = newCPU();
+this.memory = newMemory();
+this.hardDrive = newHardDrive();
+    }
+publicvoidstart() {
+        cpu.start();
+        memory.load();
+        hardDrive.read();
+    }
+publicvoidshutDown() {
+        hardDrive.stop();
+        memory.clear();
+        cpu.shutDown();
+    }
+}
+ComputerFacadecomputer=newComputerFacade();
+computer.start();
+computer.shutDown();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 19/46
+
+Flyweight Pattern
+The Flyweight pattern uses sharing to support large numbers of fine-grained
+objects efficiently. It's useful when you have a large number of objects that share
+a common state and can be replaced by a single shared object.
+Example: A shape factory that reuses existing circle objects with the same
+color.
+publicinterfaceShape {
+voiddraw();
+}
+publicclassCircleimplementsShape {
+private String color;
+publicCircle(String color) {
+this.color = color;
+    }
+@Override
+publicvoiddraw() {
+        System.out.println("Drawing a " + color + " circle.");
+    }
+}
+publicclassShapeFactory {
+privatestaticfinal Map<String, Shape> circleMap = newHashM
+publicstatic Shape getCircle(String color) {
+Circlecircle= (Circle) circleMap.get(color);
+if (circle == null) {
+            circle = newCircle(color);
+            circleMap.put(color, circle);
+            System.out.println("Creating a " + color + " circle."
+        }
+return circle;2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 20/46
+
+Usage :
+Proxy Pattern
+The Proxy pattern provides a surrogate or placeholder for another object to
+control access to it. It's useful when you want to add a layer of indirection
+between the client and the real object.
+Example: An image proxy that loads the real image on demand.    }
+}
+ShaperedCircle1= ShapeFactory.getCircle("red");
+ShaperedCircle2= ShapeFactory.getCircle("red");
+ShapeblueCircle= ShapeFactory.getCircle("blue");
+redCircle1.draw();
+redCircle2.draw();
+blueCircle.draw();
+publicinterfaceImage {
+voiddisplay();
+}
+publicclassRealImageimplementsImage {
+private String fileName;
+publicRealImage(String fileName) {
+this.fileName = fileName;
+        loadFromFile(fileName);
+    }
+privatevoidloadFromFile(String fileName) {
+        System.out.println("Loading image from file: " + fileName
+    }2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 21/46
+
+Usage :
+Behavioral Patterns
+Behavioral patterns define the ways in which objects interact and communicate
+with one another. They help to streamline the communication between
+components and promote flexible and maintainable systems.@Override
+publicvoiddisplay() {
+        System.out.println("Displaying image: " + fileName);
+    }
+}
+publicclassImageProxyimplementsImage {
+private String fileName;
+private RealImage realImage;
+publicImageProxy(String fileName) {
+this.fileName = fileName;
+    }
+@Override
+publicvoiddisplay() {
+if (realImage == null) {
+            realImage = newRealImage(fileName);
+        }
+        realImage.display();
+    }
+}
+Imageimage=newImageProxy("example.jpg");
+image.display(); // Loads the image and displays it
+image.display(); // Displays the image without loading it again2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 22/46
+
+Chain of Responsibility Pattern
+The Chain of Responsibility pattern allows you to pass requests along a chain of
+handlers. Each handler decides whether to process the request or pass it to the
+next handler in the chain.
+Example: A logger with different log levels.
+publicabstractclassLogger {
+protectedint logLevel;
+protected Logger nextLogger;
+publicvoidsetNextLogger(Logger nextLogger) {
+this.nextLogger = nextLogger;
+    }
+publicvoidlogMessage(int level, String message) {
+if (this.logLevel == level) {
+            write(message);
+        }
+if (nextLogger == null) {
+            nextLogger.logMessage(level, message);
+        }
+    }
+protectedabstractvoidwrite(String message);
+}
+publicclassConsoleLoggerextendsLogger {
+publicConsoleLogger(int logLevel) {
+this.logLevel = logLevel;
+    }
+@Override
+protectedvoidwrite(String message) {
+        System.out.println("Console Logger: " + message);
+    }
+}
+publicclassFileLoggerextendsLogger {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 23/46
+
+Usage :
+Command PatternpublicFileLogger(int logLevel) {
+this.logLevel = logLevel;
+    }
+@Override
+protectedvoidwrite(String message) {
+        System.out.println("File Logger: " + message);
+    }
+}
+publicclassErrorLoggerextendsLogger {
+publicErrorLogger(int logLevel) {
+this.logLevel = logLevel;
+    }
+@Override
+protectedvoidwrite(String message) {
+        System.out.println("Error Logger: " + message);
+    }
+}
+ LoggerconsoleLogger=newConsoleLogger(1);
+LoggerfileLogger=newFileLogger(2);
+LoggererrorLogger=newErrorLogger(3);
+consoleLogger.setNextLogger(fileLogger);
+fileLogger.setNextLogger(errorLogger);
+consoleLogger.logMessage(1, "This is an informational message.");
+consoleLogger.logMessage(2, "This is a warning message.");
+consoleLogger.logMessage(3, "This is an error message.");2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 24/46
+
+The Command pattern encapsulates a request as an object, allowing you to
+parameterize clients with different requests, queue or log requests, and support
+undoable operations.
+Example: A remote control for electronic devices.
+publicinterfaceCommand {
+voidexecute();
+}
+publicclassTurnOnCommandimplementsCommand {
+private ElectronicDevice device;
+publicTurnOnCommand(ElectronicDevice device) {
+this.device = device;
+    }
+@Override
+publicvoidexecute() {
+        device.turnOn();
+    }
+}
+publicclassTurnOffCommandimplementsCommand {
+private ElectronicDevice device;
+publicTurnOffCommand(ElectronicDevice device) {
+this.device = device;
+    }
+@Override
+publicvoidexecute() {
+        device.turnOff();
+    }
+}
+publicclassRemoteControl {
+private Command command;
+publicvoidsetCommand(Command command) {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 25/46
+
+Usage :this.command = command;
+    }
+publicvoidpressButton() {
+        command.execute();
+    }
+}
+publicinterfaceElectronicDevice {
+voidturnOn();
+voidturnOff();
+}
+publicclassTelevisionimplementsElectronicDevice {
+@Override
+publicvoidturnOn() {
+        System.out.println("Television turned on.");
+    }
+@Override
+publicvoidturnOff() {
+        System.out.println("Television turned off.");
+    }
+}
+ElectronicDevicetelevision=newTelevision();
+CommandturnOnCommand=newTurnOnCommand(television);
+CommandturnOffCommand=newTurnOffCommand(television);
+RemoteControlremoteControl=newRemoteControl();
+remoteControl.setCommand(turnOnCommand);
+remoteControl.pressButton(); //Turns on the television
+remoteControl.setCommand(turnOffCommand);
+remoteControl.pressButton(); // Turns off the television2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 26/46
+
+Interpreter Pattern
+The Interpreter pattern defines a representation for a language's grammar and
+provides an interpreter to evaluate expressions in the language. It's useful when
+you want to create a simple language or parse a complex expression.
+Example: A calculator that evaluates arithmetic expressions.
+publicinterfaceExpression {
+intinterpret();
+}
+publicclassAddExpressionimplementsExpression {
+private Expression left;
+private Expression right;
+publicAddExpression(Expression left, Expression right) {
+this.left = left;
+this.right = right;
+    }
+@Override
+publicintinterpret() {
+return left.interpret() + right.interpret();
+    }
+}
+publicclassSubtractExpressionimplementsExpression {
+private Expression left;
+private Expression right;
+publicSubtractExpression(Expression left, Expression right)
+this.left = left;
+this.right = right;
+    }
+@Override
+publicintinterpret() {
+return left.interpret() - right.interpret();
+    }2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 27/46
+
+Usage :
+Iterator Pattern
+The Iterator pattern provides a way to access the elements of an aggregate object
+sequentially without exposing its underlying representation. It's useful when you
+want to traverse a data structure without knowing its implementation details.
+Example: A custom list with an iterator.}
+publicclassNumberExpressionimplementsExpression {
+privateint number;
+publicNumberExpression(int number) {
+this.number = number;
+    }
+@Override
+publicintinterpret() {
+return number;
+    }
+}
+ Expressionleft=newNumberExpression(5);
+Expressionright=newNumberExpression(3);
+ExpressionaddExpression=newAddExpression(left, right);
+System.out.println("5 + 3 = " + addExpression.interpret());
+ExpressionsubtractExpression=newSubtractExpression(left, righ
+System.out.println("5 - 3 = " + subtractExpression.interpret());2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 28/46
+
+publicinterfaceIterator<E> {
+booleanhasNext();
+    E next();
+}
+publicinterfaceIterable<E> {
+    Iterator<E> iterator();
+}
+publicclassCustomList<E> implementsIterable<E> {
+private List<E> items;
+publicCustomList() {
+        items = newArrayList=>();
+    }
+publicvoidadd(E item) {
+        items.add(item);
+    }
+public E get(int index) {
+return items.get(index);
+    }
+publicintsize() {
+return items.size();
+    }
+@Override
+public Iterator<E> iterator() {
+returnnewCustomListIterator();
+    }
+privateclassCustomListIteratorimplementsIterator<E> {
+privateintcurrentIndex=0;
+@Override
+publicbooleanhasNext() {
+return currentIndex < items.size();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 29/46
+
+Usage :
+Mediator Pattern
+The Mediator pattern defines an object that encapsulates how a set of objects
+interact. It promotes loose coupling by keeping objects from referring to each
+other explicitly and allows their interaction to be changed independently.
+Example: A chat room with users.        }
+@Override
+public E next() {
+if (!hasNext()) {
+thrownewNoSuchElementException();
+            }
+return items.get(currentIndex++);
+        }
+    }
+}
+CustomList<String> names = newCustomList=>();
+names.add("Alice");
+names.add("Bob");
+names.add("Carol");
+Iterator<String> iterator = names.iterator();
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
+publicinterfaceMediator {
+voidsendMessage(String message, User user);
+}2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 30/46
+
+publicclassChatRoomimplementsMediator {
+private List<User> users = newArrayList=>();
+publicvoidaddUser(User user) {
+        users.add(user);
+    }
+@Override
+publicvoidsendMessage(String message, User sender) {
+for (User user : users) {
+if (user == sender) {
+                user.receiveMessage(message);
+            }
+        }
+    }
+}
+publicabstractclassUser {
+protected Mediator mediator;
+protected String name;
+publicUser(Mediator mediator, String name) {
+this.mediator = mediator;
+this.name = name;
+    }
+publicvoidsendMessage(String message) {
+        mediator.sendMessage(message, this);
+    }
+publicabstractvoidreceiveMessage(String message);
+}
+publicclassConcreteUserextendsUser {
+publicConcreteUser(Mediator mediator, String name) {
+super(mediator, name);
+    }
+@Override
+publicvoidreceiveMessage(String message) {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 31/46
+
+Usage :
+Memento Pattern
+The Memento pattern captures and externalizes an object's internal state so that
+the object can be restored to this state later. It's useful when you need to
+implement undo or rollback functionality.
+Example: A text editor with undo functionality.        System.out.println(name + " received: " + message);
+    }
+}
+ChatRoomchatRoom=newChatRoom();
+Useralice=newConcreteUser(chatRoom, "Alice");
+Userbob=newConcreteUser(chatRoom, "Bob");
+chatRoom.addUser(alice);
+chatRoom.addUser(bob);
+alice.sendMessage("Hi, Bob!");
+bob.sendMessage("Hello, Alice!");
+publicclassTextEditor {
+privateStringtext="";
+privateStringlastSavedText="";
+publicvoidwrite(String newText) {
+        text += newText;
+    }
+publicvoidsave() {
+        lastSavedText = text;
+    }2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 32/46
+
+Usage :
+Observer Pattern
+The Observer pattern defines a one-to-many dependency between objects so
+that when one object changes state, all its dependents are notified and updated
+automatically. It's useful when you want to maintain consistency between related
+objects.
+Example: A weather station with multiple display elements.publicvoidundo() {
+        text = lastSavedText;
+    }
+public String read() {
+return text;
+    }
+}
+TextEditortextEditor=newTextEditor();
+textEditor.write("Hello, world!");
+textEditor.save();
+textEditor.write(" And this is a new line.");
+System.out.println(textEditor.read());
+textEditor.undo();
+System.out.println(textEditor.read());
+publicinterfaceObserver {
+voidupdate(float temperature, float humidity, float pressure
+}
+publicinterfaceSubject {
+voidregisterObserver(Observer observer);2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 33/46
+
+voidremoveObserver(Observer observer);
+voidnotifyObservers();
+}
+publicinterfaceDisplayElement {
+voiddisplay();
+}
+publicclassWeatherDataimplementsSubject {
+private List<Observer> observers;
+privatefloat temperature;
+privatefloat humidity;
+privatefloat pressure;
+publicWeatherData() {
+        observers = newArrayList=>();
+    }
+@Override
+publicvoidregisterObserver(Observer observer) {
+        observers.add(observer);
+    }
+@Override
+publicvoidremoveObserver(Observer observer) {
+        observers.remove(observer);
+    }
+@Override
+publicvoidnotifyObservers() {
+for (Observer observer : observers) {
+            observer.update(temperature, humidity, pressure);
+        }
+    }
+publicvoidsetMeasurements(float temperature, float humidity
+this.temperature = temperature;
+this.humidity = humidity;
+this.pressure = pressure;
+        notifyObservers();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 34/46
+
+    }
+}
+publicclassCurrentConditionsDisplayimplementsObserver, Displa
+privatefloat temperature;
+privatefloat humidity;
+private Subject weatherData;
+publicCurrentConditionsDisplay(Subject weatherData) {
+this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+@Override
+publicvoidupdate(float temperature, float humidity, float p
+this.temperature = temperature;
+this.humidity = humidity;
+        display();
+    }
+@Override
+publicvoiddisplay() {
+        System.out.println("Current conditions: " + temperature +
+    }
+}
+publicclassForecastDisplayimplementsObserver, DisplayElement 
+privatefloatcurrentPressure=29.92f;
+privatefloat lastPressure;
+private Subject weatherData;
+publicForecastDisplay(Subject weatherData) {
+this.weatherData = weatherData;
+        weatherData.registerObserver(this);
+    }
+@Override
+publicvoidupdate(float temperature, float humidity, float p
+        lastPressure = currentPressure;
+        currentPressure = pressure;2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 35/46
+
+Usage :
+State Pattern
+The State pattern allows an object to alter its behavior when its internal state
+changes. The object appears to change its class. It's useful when you have an
+object with a large number of conditional statements based on its state.
+Example: A gumball machine with different states.        display();
+    }
+@Override
+publicvoiddisplay() {
+        System.out.print("Forecast: ");
+if (currentPressure > lastPressure) {
+            System.out.println("Improving weather on the way!");
+        } elseif (currentPressure == lastPressure) {
+            System.out.println("More of the same");
+        } elseif (currentPressure < lastPressure) {
+            System.out.println("Watch out for cooler, rainy weath
+        }
+    }
+}
+ WeatherDataweatherData=newWeatherData();
+CurrentConditionsDisplaycurrentConditionsDisplay=newCurrentCo
+ForecastDisplayforecastDisplay=newForecastDisplay(weatherData
+weatherData.setMeasurements(25.5f, 65f, 30.4f);
+weatherData.setMeasurements(22.2f, 70f, 29.2f);
+publicinterfaceState {
+voidinsertCoin();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 36/46
+
+voidejectCoin();
+voidturnCrank();
+voiddispense();
+}
+publicclassGumballMachine {
+    State soldOutState;
+    State noCoinState;
+    State hasCoinState;
+    State soldState;
+    State state;
+intcount=0;
+publicGumballMachine(int count) {
+        soldOutState = newSoldOutState(this);
+        noCoinState = newNoCoinState(this);
+        hasCoinState = newHasCoinState(this);
+        soldState = newSoldState(this);
+this.count = count;
+if (count > 0) {
+            state = noCoinState;
+        } else {
+            state = soldOutState;
+        }
+    }
+publicvoidinsertCoin() {
+        state.insertCoin();
+    }
+publicvoidejectCoin() {
+        state.ejectCoin();
+    }
+publicvoidturnCrank() {
+        state.turnCrank();
+        state.dispense();
+    }2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 37/46
+
+The State implementations are not shown here due to length constraints. You
+can find the full example in the GitHub repository
+Usage :voidsetState(State state) {
+this.state = state;
+    }
+voidreleaseBall() {
+        System.out.println("A gumball comes rolling out==.");
+if (count == 0) {
+            count=-;
+        }
+    }
+intgetCount() {
+return count;
+    }
+    State getSoldOutState() {
+return soldOutState;
+    }
+    State getNoCoinState() {
+return noCoinState;
+    }
+    State getHasCoinState() {
+return hasCoinState;
+    }
+    State getSoldState() {
+return soldState;
+    }
+}2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 38/46
+
+Strategy Pattern
+The Strategy pattern defines a family of algorithms, encapsulates each one, and
+makes them interchangeable. It lets the algorithm vary independently from clients
+that use it. It's useful when you have multiple ways to solve a problem and want to
+choose an algorithm at runtime.
+Example: A text editor with different sorting algorithms.GumballMachinegumballMachine=newGumballMachine(5);
+gumballMachine.insertCoin();
+gumballMachine.turnCrank();
+gumballMachine.insertCoin();
+gumballMachine.ejectCoin();
+gumballMachine.turnCrank();
+gumballMachine.insertCoin();
+gumballMachine.turnCrank();
+gumballMachine.insertCoin();
+gumballMachine.turnCrank();
+gumballMachine.ejectCoin();
+gumballMachine.insertCoin();
+gumballMachine.insertCoin();
+gumballMachine.turnCrank();
+gumballMachine.insertCoin();
+gumballMachine.turnCrank();
+gumballMachine.insertCoin();
+gumballMachine.turnCrank();
+publicinterfaceSortingStrategy {
+voidsort(List<String> list);
+}
+publicclassQuickSortStrategyimplementsSortingStrategy {2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 39/46
+
+Usage:@Override
+publicvoidsort(List<String> list) {
+// Implement quick sort algorithm here
+        System.out.println("List sorted using Quick Sort");
+    }
+}
+publicclassMergeSortStrategyimplementsSortingStrategy {
+@Override
+publicvoidsort(List<String> list) {
+// Implement merge sort algorithm here
+        System.out.println("List sorted using Merge Sort");
+    }
+}
+publicclassTextEditor {
+private SortingStrategy strategy;
+publicTextEditor(SortingStrategy strategy) {
+this.strategy = strategy;
+    }
+publicvoidsetStrategy(SortingStrategy strategy) {
+this.strategy = strategy;
+    }
+publicvoidsort(List<String> list) {
+        strategy.sort(list);
+    }
+}
+List<String> text = Arrays.asList("apple", "orange", "banana", "g
+TextEditortextEditor=newTextEditor(newQuickSortStrategy());
+textEditor.sort(text);2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 40/46
+
+Template Method Pattern
+The Template Method pattern defines the skeleton of an algorithm in an
+operation, deferring some steps to subclasses. It lets subclasses redefine certain
+steps of an algorithm without changing the algorithm's structure. It's useful when
+you want to share common behavior between classes with different
+implementations.
+Example: A data exporter with different export formats.textEditor.setStrategy(newMergeSortStrategy());
+textEditor.sort(text);
+publicabstractclassDataExporter {
+publicfinalvoidexportData() {
+        fetchData();
+        formatData();
+        writeDataToFile();
+    }
+protectedabstractvoidfetchData();
+protectedabstractvoidformatData();
+privatevoidwriteDataToFile() {
+// Write data to a file
+        System.out.println("Data written to file");
+    }
+}
+publicclassCSVDataExporterextendsDataExporter {
+@Override
+protectedvoidfetchData() {
+        System.out.println("Fetching data for CSV export");
+    }
+@Override
+protectedvoidformatData() {
+        System.out.println("Formatting data as CSV");2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 41/46
+
+Usage :
+Conclusion
+Design patterns are an essential tool for every Java programmer. They provide
+reusable solutions to common problems, allowing you to write cleaner, more
+maintainable code. By studying and implementing these patterns in your projects,
+you can improve your skills as a developer and make your software more
+adaptable to change. Don't forget to practice implementing these patterns in your
+projects to get a better grasp of their usage.
+Remember that design patterns are not a one-size-fits-all solution, and it's
+essential to understand the problem you're trying to solve and choose the
+appropriate design pattern for the situation. The examples provided in this blog
+post are just the starting point for understanding the patterns. To gain a deeper    }
+}
+publicclassXMLDataExporterextendsDataExporter {
+@Override
+protectedvoidfetchData() {
+        System.out.println("Fetching data for XML export");
+    }
+@Override
+protectedvoidformatData() {
+        System.out.println("Formatting data as XML");
+    }
+}
+DataExportercsvExporter=newCSVDataExporter();
+csvExporter.exportData();
+DataExporterxmlExporter=newXMLDataExporter();
+xmlExporter.exportData();2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 42/46
+
+knowledge of design patterns, consider studying additional resources and
+examples to expand your understanding and mastery of these powerful tools.
+More from this blog
+Spring Boot (Imperative) vs Spring WebFlux (Reactive)
+1. Introduction Spring Boot and Spring WebFlux are two approaches to building applications using the
+Spring framework. Spring Boot follows a traditional imperative (blocking) programming model, while
+Spring WebFlux is reactive (non-blocking) and desi...
+Apr 4, 20254 min read
+✉Subscribe to the newsletter.
+Get new posts in your inbox.
+you@example.com
+Subscribe2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 43/46
+
+A Comprehensive Guide to Reflection in Java for Developers
+Exploring Java Reflection for Dynamic Code Execution
+Apr 22, 202310 min read
+Unleashing the Power of Annotations in Java: A Comprehensive
+Guide
+Discover the power of Java annotations, learn how to create and process custom annotations, and
+enhance your projects with this essential feature.2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 44/46
+
+Apr 20, 20236 min read
+Mastering Generics in Java: A Comprehensive Guide for Java
+Developers
+Delve into the world of Java generics to write robust, type-safe, and reusable code.
+Apr 17, 20237 min read
+Mastering Multithreading in Java for Enhanced Performance2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 45/46
+
+A comprehensive guide to advanced multithreading in Java, with practical code examples for optimal
+performance
+Apr 16, 202311 min read
+Embracing Tech Evolution
+12 posts published
+  
+©2026Embracing Tech Evolution
+MembersArchivePrivacyTerms
+Sitemap RSS2/3/26, 6:11 AM Master Java Design Patterns with Examples
+https://techthoughtsexplorer.hashnode.dev/a-comprehensive-guide-to-design-patterns-in-java 46/46
