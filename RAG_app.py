@@ -150,3 +150,12 @@ Answer:
 
     # Return the assistant's reply text, stripped of whitespace
     return resp.choices[0].message.content.strip()
+
+
+if __name__ == "__main__":
+    print("Enter 'exit' or 'quit' to end.")
+    while True:
+        question = input("Your question: ")
+        if question.lower() in ("exit", "quit"):
+            break
+        print("Answer:", answer_question(question))
