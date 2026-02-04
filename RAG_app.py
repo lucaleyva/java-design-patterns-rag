@@ -4,13 +4,13 @@ import warnings
 from dotenv import load_dotenv
 import os
 import openai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer, CrossEncoder
 import numpy as np
 import faiss
 
 # Suppress noisy logs
-logging.getLogger("langchain.text_splitter").setLevel(logging.ERROR)
+logging.getLogger("langchain_text_splitters").setLevel(logging.ERROR)
 hf_logging.set_verbosity_error()
 warnings.filterwarnings("ignore")
 
@@ -139,7 +139,7 @@ Answer:
 
     # Call OpenAI Chat Completions with the prompts and parameters
     resp = openai.chat.completions.create(
-        model="gpt-5-nano",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
