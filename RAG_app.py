@@ -105,3 +105,48 @@ def rerank_chunks(question: str, candidate_chunks: list[str], m: int = top_m) ->
     ranked = sorted(zip(candidate_chunks, scores), key=lambda x: float(x[1]), reverse=True)
     best = [c for c, _ in ranked[:m]]
     return _dedupe_preserve_order(best)
+
+# -----------------------------
+# QA with LLM
+# -----------------------------
+def answer_question(question: str) -> str:
+    """
+    Retrieves candidate chunks, re-ranks them, and uses OpenAI's Chat Completions API to answer.
+    """
+    # Retrieve candidate chunks via FAISS
+    candidates = retrieve_chunks(question)
+
+    # Re-rank to final context
+    relevant_chunks = rerank_chunks(question, candidates, m=top_m)
+
+    # Combine chunks into a single context string separated by double newlines
+    context = "\n\n".join(relevant_chunks)
+
+    # System prompt defining the assistant's behavior
+    system_prompt = (
+        "You are a knowledgeable assistant that answers questions based on the provided context. "
+        "If the answer is not in the context, say you don't know."
+    )
+
+    # User prompt including the context and the question
+    user_prompt = f"""Context:
+{context}
+
+Question: {question}
+
+Answer:
+"""
+
+    # Call OpenAI Chat Completions with the prompts and parameters
+    resp = openai.chat.completions.create(
+        model="gpt-5",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        temperature=0.0,
+        max_tokens=500,
+    )
+
+    # Return the assistant's reply text, stripped of whitespace
+    return resp.choices[0].message.content.strip()
