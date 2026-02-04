@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 import os
 import openai
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from sentence_transformers import SentenceTransformer
+import numpy as np
+import faiss
 
 # Suppress noisy logs
 logging.getLogger("langchain.text_splitter").setLevel(logging.ERROR)
@@ -44,3 +47,13 @@ text_splitter = RecursiveCharacterTextSplitter(
     chunk_overlap=chunk_overlap,
 )
 chunks = text_splitter.split_text(text)
+
+# Load model and encode chunks (bi-encoder)
+embedder = SentenceTransformer(model_name)
+embeddings = embedder.encode(chunks, show_progress_bar=False)
+embeddings = np.array(embeddings).astype('float32')
+
+# Initialize FAISS index and add embeddings
+dimension = embeddings.shape[1]
+faiss_index = faiss.IndexFlatL2(dimension)
+faiss_index.add(embeddings)
