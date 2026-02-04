@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import openai
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 import numpy as np
 import faiss
 
@@ -76,3 +76,32 @@ def retrieve_chunks(question: str, k: int = top_k):
     q_arr = np.array(q_vec).astype('float32')
     distances, I = faiss_index.search(q_arr, k)
     return [chunks[i] for i in I[0]]
+
+# -----------------------------
+# Re-ranking (cross-encoder)
+# -----------------------------
+# Initialize the cross-encoder once
+reranker = CrossEncoder(cross_encoder_name)
+
+def _dedupe_preserve_order(items):
+    """Remove duplicates while preserving first occurrence order."""
+    seen = set()
+    out = []
+    for it in items:
+        key = " ".join(it.split())  # normalize whitespace
+        if key not in seen:
+            seen.add(key)
+            out.append(it)
+    return out
+
+def rerank_chunks(question: str, candidate_chunks: list[str], m: int = top_m) -> list[str]:
+    """
+    Score (question, chunk) pairs with a cross-encoder and return the top-m chunks.
+    """
+    if not candidate_chunks:
+        return []
+    pairs = [(question, c) for c in candidate_chunks]
+    scores = reranker.predict(pairs)  # higher = more relevant
+    ranked = sorted(zip(candidate_chunks, scores), key=lambda x: float(x[1]), reverse=True)
+    best = [c for c, _ in ranked[:m]]
+    return _dedupe_preserve_order(best)
