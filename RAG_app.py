@@ -139,13 +139,12 @@ Answer:
 
     # Call OpenAI Chat Completions with the prompts and parameters
     resp = openai.chat.completions.create(
-        model="gpt-5",
+        model="gpt-5-nano",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ],
-        temperature=0.0,
-        max_tokens=500,
+        max_completion_tokens=500,
     )
 
     # Return the assistant's reply text, stripped of whitespace
