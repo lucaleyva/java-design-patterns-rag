@@ -57,3 +57,22 @@ embeddings = np.array(embeddings).astype('float32')
 dimension = embeddings.shape[1]
 faiss_index = faiss.IndexFlatL2(dimension)
 faiss_index.add(embeddings)
+
+# -----------------------------
+# Retrieval (bi-encoder + FAISS)
+# -----------------------------
+def retrieve_chunks(question: str, k: int = top_k):
+    """
+    Encode the question and search the FAISS index for top k similar chunks.
+
+    Args:
+        question (str): The input question string.
+        k (int): Number of nearest chunks to retrieve (default: top_k).
+
+    Returns:
+        List[str]: List of candidate text chunks.
+    """
+    q_vec = embedder.encode([question], show_progress_bar=False)
+    q_arr = np.array(q_vec).astype('float32')
+    distances, I = faiss_index.search(q_arr, k)
+    return [chunks[i] for i in I[0]]
